@@ -305,6 +305,8 @@ jobs:
           - 5432:5432
 
     steps:
+      - name: Display initial disk usage
+        run: df -H
       - name: Checkout repository
         uses: actions/checkout@v4
       - uses: ./.github/actions/e2e-Setup-Composite
@@ -419,6 +421,9 @@ jobs:
         with:
           name: cypress-screenshots
           path: ${{env.SUBMITTY_REPOSITORY}}/site/cypress/screenshots
+      - name: Display disk usage after failure
+        if: failure()
+        run: df -H
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
@@ -487,6 +492,9 @@ jobs:
         with:
           name: cypress-screenshots
           path: ${{env.SUBMITTY_REPOSITORY}}/site/cypress/screenshots
+      - name: Display disk usage after failure
+        if: failure()
+        run: df -H
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
