@@ -455,19 +455,12 @@ class HomeworkView extends AbstractView {
             else {
                 return 0;
             }
-        $min_team_member_late_days_exceptions = $team_ldi !== null ? min(array_map(function ($ldi) {
-            if ($ldi !== null) {
-                return $ldi->getLateDayException();
-            }
-            else {
-                return 0;
-            }
         }, $team_ldi)) : 0;
 
         $team_eldi = ($graded_gradeable !== null && $my_team !== null) ? LateDayInfo::fromSubmitter($this->core, $graded_gradeable->getSubmitter(), $graded_gradeable) : null;
-         $min_team_member_excused_late_days = $team_eldi !== null ? min(array_map(function ($eldi) {
+         $min_team_member_late_days_exceptions = $team_eldi !== null ? min(array_map(function ($eldi) {
             if ($eldi !== null) {
-                var_dump($eldi)
+                var_dump($eldi);
                 return $eldi->getLateDayException();
             }
             else {
@@ -527,11 +520,7 @@ class HomeworkView extends AbstractView {
             'gradeable_message' => $gradeable->getAutogradingConfig()->getGradeableMessage(),
             'allowed_late_days' => $gradeable->getLateDays(),
             'min_team_member_late_days' => $min_team_member_late_days,
-<<<<<<< Updated upstream
             'min_team_member_late_days_exceptions' => $min_team_member_late_days_exceptions,
-=======
-            'min_team_member_excused_late_days' => $min_team_member_excused_late_days,
->>>>>>> Stashed changes
             'num_inputs' => isset($notebook_inputs) ? count($notebook_inputs) : 0,
             'max_submissions' => $gradeable->getAutogradingConfig()->getMaxSubmissions(),
             'display_version' => $display_version,
