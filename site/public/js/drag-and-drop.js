@@ -967,9 +967,13 @@ function handleSubmission(gradeable_status, remaining_late_days_for_gradeable, c
         }
     }
     // check team date
+<<<<<<< Updated upstream
     console.error("hi");
 
     if (!late_warning_seen && is_team_assignment && ((min_team_member_late_days - days_to_be_charged + charged_late_days < 0) || true)) {
+=======
+    if (!late_warning_seen && is_team_assignment && (min_team_member_late_days - days_to_be_charged + charged_late_days < 0 || min_team_member_late_days < 0) {
+>>>>>>> Stashed changes
         message = 'There is at least 1 member on your team that does not have enough late days for this submission. This will result in them receiving a marked grade of zero. Are you sure you want to continue?';
         if (!confirm(message)) {
             return;
