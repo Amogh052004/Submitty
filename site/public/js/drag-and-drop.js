@@ -946,6 +946,17 @@ function handleSubmission(gradeable_status, remaining_late_days_for_gradeable, c
     const days_to_be_charged = Math.max(0,days_past_deadline-late_day_exceptions);
     // gradeable_status == 3 is a bad submission (too many late days used) and therefore no need to show a warning message anymore
 
+    // check team date
+    console.error("hi");
+    console.log();
+    if (!late_warning_seen && is_team_assignment && ( (min_team_member_late_days - days_to_be_charged + charged_late_days < 0) || (min_team_member_late_days_exceptions < 0) ) ) {
+        message = 'There is at least 1 member on your team that does not have enough late days for this submission. This will result in them receiving a marked grade of zero. Are you sure you want to continue?';
+        late_warning_seen = true;
+        if (!confirm(message)) {
+            return;
+        }
+    }
+
     if ( days_past_deadline > 0 && gradeable_status !== 3 ) {
 
         /* days_to_be_charged !== charged_late_days will make sure that both messages won't appear multiple times if it already appeared once and the user made a submission */
@@ -964,15 +975,6 @@ function handleSubmission(gradeable_status, remaining_late_days_for_gradeable, c
                 $('#submit').prop('disabled', false);
                 return;
             }
-        }
-    }
-    // check team date
-    console.error("hi");
-    console.log();
-    if (!late_warning_seen && is_team_assignment && (min_team_member_late_days - days_to_be_charged + charged_late_days < 0 || min_team_member_late_days_exceptions < 0)) {
-        message = 'There is at least 1 member on your team that does not have enough late days for this submission. This will result in them receiving a marked grade of zero. Are you sure you want to continue?';
-        if (!confirm(message)) {
-            return;
         }
     }
 

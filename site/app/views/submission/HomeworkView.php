@@ -460,7 +460,7 @@ class HomeworkView extends AbstractView {
         $team_eldi = ($graded_gradeable !== null && $my_team !== null) ? LateDayInfo::fromSubmitter($this->core, $graded_gradeable->getSubmitter(), $graded_gradeable) : null;
          $min_team_member_late_days_exceptions = $team_eldi !== null ? min(array_map(function ($eldi) {
             if ($eldi !== null) {
-                var_dump($eldi);
+                var_dump($eldi->getLateDayException());
                 return $eldi->getLateDayException();
             }
             else {
