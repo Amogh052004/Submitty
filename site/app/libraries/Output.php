@@ -9,11 +9,12 @@ use app\models\Breadcrumb;
 use app\views\ErrorView;
 use League\CommonMark\Extension\Autolink\AutolinkExtension;
 use League\CommonMark\Extension\Table\TableExtension;
-use League\CommonMark\Block\Element\FencedCode;
-use League\CommonMark\Block\Element\IndentedCode;
-use League\CommonMark\Inline\Element\Code;
-use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\Environment;
+use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
+use League\CommonMark\Extension\CommonMark\Node\Block\IndentedCode;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
+// use League\CommonMark\CommonMarkConverter;
+use League\CommonMark\MarkdownConverter;
+use League\CommonMark\Environment\Environment;
 use app\libraries\CustomCodeInlineRenderer;
 use Aptoma\Twig\Extension\MarkdownEngine\PHPLeagueCommonMarkEngine;
 use Aptoma\Twig\Extension\MarkdownExtension;
@@ -158,8 +159,8 @@ HTML;
                 return $this->core->getConfig()->checkFeatureFlagEnabled($flag);
             }));
         }
-
-        $environment = Environment::createCommonMarkEnvironment();
+        $config = ['html_input' => 'escape', 'allow_unsafe_links' => false, 'max_nesting_level' => 10];
+        $environment = new Environment($config);
         $environment->addExtension(new AutolinkExtension());
         $environment->addExtension(new TableExtension());
         $environment->addBlockRenderer(FencedCode::class, new CustomFencedCodeRenderer());
@@ -167,7 +168,7 @@ HTML;
         $environment->addInlineRenderer(Code::class, new CustomCodeInlineRenderer());
         $environment->mergeConfig([]);
 
-        $converter = new CommonMarkConverter(['html_input' => 'escape', 'allow_unsafe_links' => false, 'max_nesting_level' => 10], $environment);
+        $converter = new MarkConverter($environment);
         $engine = new PHPLeagueCommonMarkEngine($converter);
         $this->twig->addExtension(new MarkdownExtension($engine));
     }
